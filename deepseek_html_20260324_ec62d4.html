@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Grace | KMH · 奢华商务名片 · 清晰信息层级</title>
+    <!-- 高级字体组合 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #C9DDD0 0%, #B8D0C0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            padding: 2rem 1.5rem;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at 20% 40%, rgba(200,169,106,0.15) 0%, rgba(143,175,159,0.08) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 语言切换器 */
+        .lang-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.65rem;
+            margin-bottom: 2.8rem;
+            background: rgba(255, 255, 250, 0.88);
+            backdrop-filter: blur(16px);
+            padding: 0.55rem 1.6rem;
+            border-radius: 100px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(200, 169, 106, 0.4);
+            z-index: 5;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 550;
+            font-size: 0.82rem;
+            padding: 0.55rem 1.2rem;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            color: #2C3E32;
+            letter-spacing: -0.2px;
+            background: rgba(255,255,245,0.7);
+        }
+        .lang-btn.active {
+            background: #C8A96A;
+            color: white;
+            box-shadow: 0 6px 14px rgba(200,169,106,0.35);
+            transform: scale(1.02);
+        }
+        .lang-btn:hover:not(.active) {
+            background: #E9E0CF;
+            color: #B48B3A;
+        }
+
+        /* 名片卡片 */
+        .business-card {
+            max-width: 720px;
+            width: 100%;
+            background: #FFFFFF;
+            border-radius: 52px;
+            box-shadow: 0 35px 55px -20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(200, 169, 106, 0.25);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        .business-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 42px 68px -24px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(200, 169, 106, 0.4);
+        }
+
+        .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 85% 15%, rgba(200,169,106,0.08) 0%, rgba(255,255,255,0) 60%),
+                repeating-linear-gradient(45deg, rgba(143,175,159,0.02) 0px, rgba(143,175,159,0.02) 2px, transparent 2px, transparent 12px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 44px 40px 48px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* DUOZI 水印 */
+        .logo-watermark {
+            position: absolute;
+            z-index: 1;
+            right: 0%;
+            top: 48%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.07;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 98px;
+            letter-spacing: 10px;
+            color: transparent;
+            -webkit-text-stroke: 1.6px #C8A96A;
+            text-stroke: 1.6px #C8A96A;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        @media (max-width: 750px) {
+            .logo-watermark { font-size: 74px; right: -2%; opacity: 0.06; -webkit-text-stroke: 1.2px #C8A96A; }
+            .card-content { padding: 34px 28px 40px 28px; }
+        }
+
+        /* ========= 信息层级重构 ========= */
+        
+        /* 第一层级：你是谁 */
+        .identity-section {
+            margin-bottom: 24px;
+        }
+        .greeting {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 480;
+            color: #7B8C7C;
+            letter-spacing: -0.1px;
+            margin-bottom: 12px;
+            border-left: 3px solid #C8A96A;
+            padding-left: 16px;
+            line-height: 1.35;
+        }
+        .name-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 42px;
+            color: #C8A96A;
+            letter-spacing: 0.12em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        
+        /* 第二层级：干什么的 */
+        .expertise-section {
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(200,169,106,0.25);
+        }
+        .role-tag {
+            display: inline-block;
+            background: rgba(200,169,106,0.1);
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #C8A96A;
+            letter-spacing: 0.3px;
+            margin-bottom: 12px;
+        }
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: #2C3E32;
+            letter-spacing: -0.2px;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+        .subtitle-light {
+            font-family: 'Inter', sans-serif;
+            font-weight: 450;
+            font-size: 14px;
+            color: #5A6A5F;
+            line-height: 1.4;
+        }
+        
+        /* 自有品牌与产品 - 精简整合 */
+        .brand-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0 8px;
+        }
+        .brand-pill {
+            background: linear-gradient(95deg, rgba(200,169,106,0.12) 0%, rgba(143,175,159,0.08) 100%);
+            border-radius: 40px;
+            padding: 6px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #B48B3A;
+            border: 0.5px solid rgba(200,169,106,0.4);
+        }
+        .brand-pill i {
+            font-size: 12px;
+            color: #C8A96A;
+        }
+        .brand-pill strong {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .category-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .mini-tag {
+            background: rgba(143, 175, 159, 0.1);
+            border: 0.5px solid rgba(200, 169, 106, 0.3);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 450;
+            color: #6C7D68;
+            letter-spacing: 0.2px;
+            transition: all 0.2s;
+        }
+        .mini-tag:hover {
+            background: rgba(200,169,106,0.1);
+            border-color: #C8A96A;
+            color: #B48B3A;
+        }
+        
+        /* 第三层级：怎么联系 + 公司信息 */
+        .contact-section {
+            margin-top: 8px;
+        }
+        .company-row {
+            font-family: 'Inter', sans-serif;
+            font-weight: 550;
+            font-size: 13px;
+            color: #4A5A50;
+            margin-bottom: 12px;
+            letter-spacing: -0.1px;
+            border-left: 2px solid #C8A96A;
+            padding-left: 12px;
+        }
+        .address-row {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            color: #7A8A7A;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .address-row i {
+            color: #C8A96A;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 470;
+            font-size: 13px;
+            color: #4A5A50;
+        }
+        .contact-icon {
+            width: 32px;
+            text-align: center;
+            font-size: 17px;
+            color: #C8A96A;
+        }
+        .contact-text a {
+            text-decoration: none;
+            color: #4A5A50;
+            transition: color 0.2s;
+            border-bottom: 0.5px dotted rgba(200,169,106,0.5);
+            font-weight: 500;
+        }
+        .contact-text a:hover {
+            color: #C8A96A;
+            border-bottom-color: #C8A96A;
+        }
+        .inline-hint {
+            font-size: 9px;
+            color: #9ABFAA;
+            margin-left: 8px;
+            font-weight: 350;
+        }
+        
+        /* 工厂优势简洁展示 */
+        .features-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .feature-light {
+            background: rgba(200,169,106,0.08);
+            border-radius: 30px;
+            padding: 5px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #B48B3A;
+        }
+        
+        .cta-guide {
+            background: linear-gradient(105deg, rgba(143, 175, 159, 0.1) 0%, rgba(200, 169, 106, 0.05) 100%);
+            border-radius: 28px;
+            padding: 12px 18px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 480;
+            color: #4F6A5B;
+            border-left: 3px solid #C8A96A;
+        }
+        .cta-guide i {
+            font-size: 18px;
+            color: #C8A96A;
+        }
+        
+        .trust-slogan {
+            font-family: 'Inter', sans-serif;
+            font-weight: 460;
+            font-size: 11px;
+            color: #9B8A6E;
+            letter-spacing: 0.3px;
+            margin-bottom: 28px;
+            border-left: 2px solid #C8A96A;
+            padding-left: 14px;
+        }
+        
+        /* 二维码 + WhatsApp按钮 */
+        .qr-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 28px;
+            margin-bottom: 20px;
+        }
+        .qr-item {
+            text-align: center;
+            width: 100px;
+            background: rgba(255, 248, 235, 0.5);
+            border-radius: 28px;
+            padding: 8px 6px;
+        }
+        .qr-code {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 22px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(200, 169, 106, 0.3);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .qr-code:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06), 0 0 0 1px #C8A96A;
+        }
+        .qr-label {
+            font-weight: 550;
+            font-size: 10px;
+            margin-top: 8px;
+            color: #5c5546;
+        }
+        .qr-hint {
+            font-size: 8px;
+            color: #9eaa94;
+            margin-top: 4px;
+        }
+        
+        .chat-wa-btn {
+            margin-top: 8px;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(200,169,106,0.1);
+            border: 1px solid rgba(200,169,106,0.55);
+            border-radius: 60px;
+            padding: 10px 24px;
+            width: fit-content;
+            font-weight: 570;
+            font-size: 12.5px;
+            color: #C8A96A;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+        .chat-wa-btn i {
+            font-size: 17px;
+            color: #25D366;
+        }
+        .chat-wa-btn:hover {
+            background: #C8A96A;
+            color: white;
+            border-color: #C8A96A;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(200,169,106,0.25);
+        }
+        .chat-wa-btn:hover i {
+            color: white;
+        }
+        
+        .footer-note {
+            font-size: 8.5px;
+            color: #C2B89A;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 0.5px solid rgba(200,169,106,0.3);
+        }
+        
+        /* RTL 适配 */
+        .card-content.rtl-layout {
+            direction: rtl;
+            text-align: right;
+        }
+        .rtl-layout .greeting {
+            border-left: none;
+            border-right: 3px solid #C8A96A;
+            padding-left: 0;
+            padding-right: 16px;
+        }
+        .rtl-layout .company-row {
+            border-left: none;
+            border-right: 2px solid #C8A96A;
+            padding-left: 0;
+            padding-right: 12px;
+        }
+        .rtl-layout .cta-guide {
+            border-left: none;
+            border-right: 3px solid #C8A96A;
+            flex-direction: row-reverse;
+        }
+        .rtl-layout .trust-slogan {
+            border-left: none;
+            border-right: 2px solid #C8A96A;
+            padding-left: 0;
+            padding-right: 14px;
+        }
+        .rtl-layout .contact-item {
+            flex-direction: row-reverse;
+        }
+        .rtl-layout .contact-icon {
+            margin-left: 14px;
+            margin-right: 0;
+        }
+        .rtl-layout .address-row {
+            flex-direction: row-reverse;
+        }
+        .rtl-layout .brand-showcase {
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        .rtl-layout .chat-wa-btn {
+            align-self: flex-start;
+            flex-direction: row-reverse;
+        }
+    </style>
+</head>
+<body>
+<div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="fr">FR</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+    <button class="lang-btn" data-lang="de">DE</button>
+    <button class="lang-btn" data-lang="id">ID</button>
+    <button class="lang-btn" data-lang="ja">JA</button>
+    <button class="lang-btn" data-lang="ko">KO</button>
+    <button class="lang-btn" data-lang="ar">AR</button>
+</div>
+
+<div class="business-card">
+    <div class="card-bg"></div>
+    <div class="logo-watermark">DUOZI</div>
+    <div class="card-content" id="cardContent">
+        <!-- 第一层级：你是谁 -->
+        <div class="identity-section">
+            <div class="greeting" id="greetingText">✨ Hello, I'm Grace — let's create something remarkable together.</div>
+            <div class="name-title">Grace | KMH</div>
+        </div>
+        
+        <!-- 第二层级：干什么的 -->
+        <div class="expertise-section">
+            <div class="role-tag" id="roleTag">✦ OEM/ODM EXPERT</div>
+            <div class="subtitle" id="sub1">OEM / ODM Solution Provider</div>
+            <div class="subtitle-light" id="sub2">Health Supplements Manufacturer</div>
+            
+            <!-- 自有品牌 + 产品类别整合（紧凑） -->
+            <div class="brand-showcase">
+                <div class="brand-pill">
+                    <i class="fas fa-star-of-life"></i>
+                    <span id="ownBrandLabel">Own Brand: </span>
+                    <strong id="brandName">Duozi</strong>
+                </div>
+            </div>
+            <div class="category-strip" id="categoriesStrip"></div>
+        </div>
+        
+        <!-- 第三层级：怎么联系 + 公司信息 -->
+        <div class="contact-section">
+            <div class="company-row" id="companyName">Guangzhou Kangmeihui Biotechnology Co., Ltd.</div>
+            <div class="address-row">
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="addressText">Room 209, No.428 Helong 7th Road, Baiyun District, Guangzhou, China</span>
+            </div>
+            
+            <div class="contact-list">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="contact-text">
+                        <span id="waLabel">WhatsApp: </span>
+                        <a href="https://wa.me/8619102008179?text=Hello%20Grace%2C%20I'm%20interested%20in%20OEM%20services" target="_blank">+86 191 0200 8179</a>
+                        <span id="waHint" class="inline-hint">(click to chat)</span>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="far fa-envelope"></i></div>
+                    <div class="contact-text">
+                        <span id="emailLabel">Email: </span>
+                        <a href="mailto:19102008179@163.com?subject=OEM%20Inquiry">19102008179@163.com</a>
+                        <span id="emailHint" class="inline-hint">📧 click to add</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工厂优势简洁展示 -->
+            <div class="features-row" id="featuresRow">
+                <span class="feature-light" id="feat1">Direct Factory</span>
+                <span class="feature-light" id="feat2">Stable Supply</span>
+                <span class="feature-light" id="feat3">Custom Formulation</span>
+            </div>
+            
+            <div class="cta-guide" id="ctaGuide">
+                <i class="fas fa-comment-dots"></i>
+                <span id="ctaText">📦 Contact me for catalog, pricing & tailored solutions.</span>
+            </div>
+            
+            <div class="trust-slogan" id="trustLine">Your Reliable OEM/ODM Partner</div>
+            
+            <!-- 二维码 + WhatsApp按钮 -->
+            <div class="qr-container">
+                <div class="qr-item">
+                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=WeChat%3A%20KMH_Health_Official" alt="WeChat QR">
+                    <div class="qr-label"><i class="fab fa-weixin"></i> WeChat</div>
+                    <div class="qr-hint" id="wechatHint">Scan to add</div>
+                </div>
+                <div class="qr-item">
+                    <a href="https://wa.me/8619102008179?text=Hello%20Grace" target="_blank" style="text-decoration: none;">
+                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https%3A%2F%2Fwa.me%2F8619102008179" alt="WhatsApp QR">
+                    </a>
+                    <div class="qr-label"><i class="fab fa-whatsapp"></i> WhatsApp</div>
+                    <div class="qr-hint" id="waQrHint">Click / Scan to chat</div>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/8619102008179?text=Hello%20Grace%2C%20I'm%20interested" target="_blank" class="chat-wa-btn" id="chatWaBtn">
+                <i class="fab fa-whatsapp"></i> <span id="chatWaText">Chat on WhatsApp</span>
+            </a>
+            
+            <div class="footer-note" id="footerNote">
+                <i class="fas fa-mouse-pointer"></i> Click email or WhatsApp · Scan QR to connect
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 多语言数据（清晰层级）
+    const translations = {
+        en: {
+            greeting: "✨ Hello, I'm Grace — let's create something remarkable together.",
+            roleTag: "✦ OEM/ODM EXPERT",
+            sub1: "OEM / ODM Solution Provider",
+            sub2: "Health Supplements Manufacturer",
+            ownBrandLabel: "Own Brand: ",
+            brandName: "Duozi",
+            categories: ["Antioxidant/Whitening", "Bone & Joint", "Women's Health", "Energy & Immunity", "Sleep/Brain", "Liver Detox", "Men's Health", "Probiotics", "Weight Management"],
+            company: "Guangzhou Kangmeihui Biotechnology Co., Ltd.",
+            address: "Room 209, No.428 Helong 7th Road, Baiyun District, Guangzhou, China",
+            waLabel: "WhatsApp: ",
+            emailLabel: "Email: ",
+            waHint: "(click to chat)",
+            emailHint: "📧 click to add",
+            feat1: "Direct Factory",
+            feat2: "Stable Supply",
+            feat3: "Custom Formulation",
+            ctaText: "📦 Contact me for catalog, pricing & tailored solutions.",
+            trustLine: "Your Reliable OEM/ODM Partner",
+            wechatHint: "Scan to add",
+            waQrHint: "Click / Scan to chat",
+            chatWaText: "Chat on WhatsApp",
+            footerNote: "Click email or WhatsApp · Scan QR to connect"
+        },
+        fr: {
+            greeting: "✨ Bonjour, je suis Grace — créons ensemble quelque chose de remarquable.",
+            roleTag: "✦ EXPERT OEM/ODM",
+            sub1: "Fournisseur de solutions OEM/ODM",
+            sub2: "Fabricant de compléments alimentaires",
+            ownBrandLabel: "Marque propre : ",
+            brandName: "Duozi",
+            categories: ["Antioxydant/Blanchiment", "Os & Articulations", "Santé féminine", "Énergie & Immunité", "Sommeil/Cerveau", "Détox foie", "Santé masculine", "Probiotiques", "Gestion du poids"],
+            company: "Guangzhou Kangmeihui Biotechnology Co., Ltd.",
+            address: "Room 209, No.428 Helong 7th Road, Baiyun District, Guangzhou, Chine",
+            waLabel: "WhatsApp : ",
+            emailLabel: "E-mail : ",
+            waHint: "(cliquez pour discuter)",
+            emailHint: "📧 cliquez pour ajouter",
+            feat1: "Usine directe",
+            feat2: "Approvisionnement stable",
+            feat3: "Formulation personnalisée",
+            ctaText: "📦 Contactez-moi pour catalogue, prix et solutions sur mesure.",
+            trustLine: "Votre partenaire OEM/ODM de confiance",
+            wechatHint: "Scannez pour ajouter",
+            waQrHint: "Cliquez / Scannez pour discuter",
+            chatWaText: "Discuter sur WhatsApp",
+            footerNote: "Cliquez sur e-mail ou WhatsApp · Scannez le QR"
+        },
+        es: {
+            greeting: "✨ Hola, soy Grace — creemos algo extraordinario juntos.",
+            roleTag: "✦ EXPERTO OEM/ODM",
+            sub1: "Proveedor de soluciones OEM/ODM",
+            sub2: "Fabricante de suplementos para la salud",
+            ownBrandLabel: "Marca propia: ",
+            brandName: "Duozi",
+            categories: ["Antioxidante/Blanqueador", "Huesos & Articulaciones", "Salud femenina", "Energía & Inmunidad", "Sueño/Cerebro", "Desintoxicación hepática", "Salud masculina", "Probióticos", "Control de peso"],
+            company: "Guangzhou Kangmeihui Biotechnology Co., Ltd.",
+            address: "Room 209, No.428 Helong 7th Road, Distrito Baiyun, Guangzhou, China",
+            waLabel: "WhatsApp: ",
+            emailLabel: "Correo: ",
+            waHint: "(haz clic para chatear)",
+            emailHint: "📧 haz clic para agregar",
+            feat1: "Fábrica directa",
+            feat2: "Suministro estable",
+            feat3: "Formulación personalizada",
+            ctaText: "📦 Contáctame para catálogo, precios y soluciones a medida.",
+            trustLine: "Su socio OEM/ODM confiable",
+            wechatHint: "Escanea para añadir",
+            waQrHint: "Haz clic / Escanea para chatear",
+            chatWaText: "Chatear en WhatsApp",
+            footerNote: "Haz clic en correo o WhatsApp · Escanea QR"
+        },
+        de: {
+            greeting: "✨ Hallo, ich bin Grace — lassen Sie uns gemeinsam etwas Besonderes schaffen.",
+            roleTag: "✦ OEM/ODM-EXPERTE",
+            sub1: "OEM/ODM-Lösungsanbieter",
+            sub2: "Hersteller von Nahrungsergänzungsmitteln",
+            ownBrandLabel: "Eigene Marke: ",
+            brandName: "Duozi",
+            categories: ["Antioxidans/Aufhellung", "Knochen & Gelenke", "Frauengesundheit", "Energie & Immunität", "Schlaf/Gehirn", "Leberentgiftung", "Männergesundheit", "Probiotika", "Gewichtsmanagement"],
+            company: "Guangzhou Kangmeihui Biotechnology Co., Ltd.",
+            address: "Room 209, No.428 Helong 7th Road, Baiyun District, Guangzhou, China",
+            waLabel: "WhatsApp: ",
+            emailLabel: "E-Mail: ",
+            waHint: "(klicken zum Chatten)",
+            emailHint: "📧 klicken zum Hinzufügen",
+            feat1: "Direkt vom Hersteller",
+            feat2: "Stabile Lieferkette",
+            feat3: "Maßgeschneiderte Formulierung",
+            ctaText: "📦 Kontaktieren Sie mich für Katalog, Preise und maßgeschneiderte Lösungen.",
+            trustLine: "Ihr zuverlässiger OEM/ODM-Partner",
+            wechatHint: "Scannen Sie zum Hinzufügen",
+            waQrHint: "Klicken / Scannen zum Chatten",
+            chatWaText: "Auf WhatsApp chatten",
+            footerNote: "Klicken Sie auf E-Mail oder WhatsApp · QR scannen"
+        },
+        id: {
+            greeting: "✨ Halo, saya Grace — mari ciptakan sesuatu yang luar biasa bersama.",
+            roleTag: "✦ AHLI OEM/ODM",
+            sub1: "Penyedia Solusi OEM/ODM",
+            sub2: "Produsen Suplemen Kesehatan",
+            ownBrandLabel: "Merek sendiri: ",
+            brandName: "Duozi",
+            categories: ["Antioksidan/Pemutih", "Tulang & Sendi", "Kesehatan Wanita", "Energi & Imunitas", "Tidur/Otak", "Detoks Hati", "Kesehatan Pria", "Probiotik", "Manajemen Berat Badan"],
+            company: "Guangzhou Kangmeihui Biotechnology Co., Ltd.",
+            address: "Room 209, No.428 Helong 7th Road, Distrik Baiyun, Guangzhou, Tiongkok",
+            waLabel: "WhatsApp: ",
+            emailLabel: "Email: ",
+            waHint: "(klik untuk mengobrol)",
+            emailHint: "📧 klik untuk menambah",
+            feat1: "Pabrik Langsung",
+            feat2: "Pasokan Stabil",
+            feat3: "Formulasi Kustom",
+            ctaText: "📦 Hubungi saya untuk katalog, harga & solusi khusus.",
+            trustLine: "Mitra OEM/ODM Terpercaya Anda",
+            wechatHint: "Pindai untuk menambah",
+            waQrHint: "Klik / Pindai untuk mengobrol",
+            chatWaText: "Obrolan di WhatsApp",
+            footerNote: "Klik email atau WhatsApp · Pindai QR"
+        },
+        ja: {
+            greeting: "✨ こんにちは、Graceです。一緒に素晴らしい製品を創りましょう。",
+            roleTag: "✦ OEM/ODM専門家",
+            sub1: "OEM/ODMソリューションプロバイダー",
+            sub2: "健康食品サプリメントメーカー",
+            ownBrandLabel: "自社ブランド: ",
+            brandName: "Duozi",
+            categories: ["抗酸化/美白", "骨・関節", "女性の健康", "エネルギー・免疫", "睡眠・脳", "肝臓デトックス", "男性の健康", "プロバイオティクス", "体重管理"],
+            company: "広州康美恵生物科技有限公司",
+            address: "中国広東省広州市白雲区鶴龍七路428号209室",
+            waLabel: "WhatsApp: ",
+            emailLabel: "メール: ",
+            waHint: "(クリックでチャット)",
+            emailHint: "📧 クリックで追加",
+            feat1: "直営工場",
+            feat2: "安定供給",
+            feat3: "カスタム処方",
+            ctaText: "📦 カタログ、価格、カスタムソリューションについてお問い合わせください。",
+            trustLine: "信頼できるOEM/ODMパートナー",
+            wechatHint: "スキャンして追加",
+            waQrHint: "クリック／スキャンでチャット",
+            chatWaText: "WhatsAppでチャット",
+            footerNote: "メールまたはWhatsAppをクリック · QRをスキャン"
+        },
+        ko: {
+            greeting: "✨ 안녕하세요, Grace입니다. 함께 놀라운 제품을 만들어가요.",
+            roleTag: "✦ OEM/ODM 전문가",
+            sub1: "OEM/ODM 솔루션 제공업체",
+            sub2: "건강기능식품 제조사",
+            ownBrandLabel: "자체 브랜드: ",
+            brandName: "Duozi",
+            categories: ["항산화/미백", "뼈 & 관절", "여성 건강", "에너지 & 면역", "수면 & 뇌 건강", "간 해독", "남성 건강", "프로바이오틱스", "체중 관리"],
+            company: "광저우 캉메이후이 바이오테크놀로지 유한회사",
+            address: "중국 광둥성 광저우시 바이윈구 헤룽 7로 428호 209호",
+            waLabel: "WhatsApp: ",
+            emailLabel: "이메일: ",
+            waHint: "(클릭하여 채팅)",
+            emailHint: "📧 클릭하여 추가",
+            feat1: "직영 공장",
+            feat2: "안정적 공급",
+            feat3: "맞춤형 제형",
+            ctaText: "📦 제품 카탈로그, 가격 및 맞춤 솔루션을 문의하세요.",
+            trustLine: "신뢰할 수 있는 OEM/ODM 파트너",
+            wechatHint: "스캔하여 추가",
+            waQrHint: "클릭 / 스캔하여 채팅",
+            chatWaText: "WhatsApp으로 채팅",
+            footerNote: "이메일 또는 WhatsApp 클릭 · QR 스캔"
+        },
+        ar: {
+            greeting: "✨ مرحبًا، أنا غرايس — لنصنع شيئًا رائعًا معًا.",
+            roleTag: "✦ خبير OEM/ODM",
+            sub1: "مزود حلول OEM/ODM",
+            sub2: "مصنع المكملات الغذائية الصحية",
+            ownBrandLabel: "العلامة التجارية الخاصة: ",
+            brandName: "Duozi",
+            categories: ["مضادات الأكسدة/تبييض", "صحة العظام والمفاصل", "صحة المرأة", "الطاقة والمناعة", "النوم وصحة الدماغ", "إزالة سموم الكبد", "صحة الرجل", "البروبيوتيك", "إدارة الوزن"],
+            company: "شركة قوانغتشو كانغميهوي للتكنولوجيا الحيوية المحدودة",
+            address: "الغرفة 209، رقم 428 طريق هيلونغ السابع، منطقة بايون، قوانغتشو، الصين",
+            waLabel: "واتساب: ",
+            emailLabel: "البريد الإلكتروني: ",
+            waHint: "(انقر للدردشة)",
+            emailHint: "📧 انقر للإضافة",
+            feat1: "مصنع مباشر",
+            feat2: "توريد مستقر",
+            feat3: "تركيبة مخصصة",
+            ctaText: "📦 تواصل معي للحصول على الكتالوج والأسعار والحلول المخصصة.",
+            trustLine: "شريكك الموثوق في OEM/ODM",
+            wechatHint: "امسح للإضافة",
+            waQrHint: "انقر / امسح للدردشة",
+            chatWaText: "الدردشة عبر واتساب",
+            footerNote: "انقر على البريد الإلكتروني أو واتساب · امسح رمز الاستجابة السريعة"
+        }
+    };
+
+    const cardContainer = document.getElementById('cardContent');
+    const categoriesStrip = document.getElementById('categoriesStrip');
+
+    function renderCategories(categories) {
+        categoriesStrip.innerHTML = '';
+        categories.forEach(cat => {
+            const tag = document.createElement('span');
+            tag.className = 'mini-tag';
+            tag.innerText = cat;
+            categoriesStrip.appendChild(tag);
+        });
+    }
+
+    function setLanguage(lang) {
+        const t = translations[lang];
+        if (!t) return;
+        
+        // 第一层级
+        document.getElementById('greetingText').innerText = t.greeting;
+        
+        // 第二层级
+        document.getElementById('roleTag').innerText = t.roleTag;
+        document.getElementById('sub1').innerText = t.sub1;
+        document.getElementById('sub2').innerText = t.sub2;
+        document.getElementById('ownBrandLabel').innerText = t.ownBrandLabel;
+        document.getElementById('brandName').innerText = t.brandName;
+        renderCategories(t.categories);
+        
+        // 第三层级
+        document.getElementById('companyName').innerText = t.company;
+        document.getElementById('addressText').innerText = t.address;
+        document.getElementById('waLabel').innerText = t.waLabel;
+        document.getElementById('emailLabel').innerText = t.emailLabel;
+        document.getElementById('waHint').innerText = t.waHint;
+        document.getElementById('emailHint').innerText = t.emailHint;
+        document.getElementById('feat1').innerText = t.feat1;
+        document.getElementById('feat2').innerText = t.feat2;
+        document.getElementById('feat3').innerText = t.feat3;
+        document.getElementById('ctaText').innerText = t.ctaText;
+        document.getElementById('trustLine').innerText = t.trustLine;
+        document.getElementById('wechatHint').innerText = t.wechatHint;
+        document.getElementById('waQrHint').innerText = t.waQrHint;
+        document.getElementById('chatWaText').innerText = t.chatWaText;
+        document.getElementById('footerNote').innerHTML = `<i class="fas fa-mouse-pointer"></i> ${t.footerNote}`;
+
+        if (lang === 'ar') {
+            cardContainer.classList.add('rtl-layout');
+            const chatBtn = document.querySelector('.chat-wa-btn');
+            if (chatBtn) chatBtn.style.direction = 'ltr';
+        } else {
+            cardContainer.classList.remove('rtl-layout');
+            const chatBtn = document.querySelector('.chat-wa-btn');
+            if (chatBtn) chatBtn.style.direction = 'ltr';
+        }
+    }
+
+    const btns = document.querySelectorAll('.lang-btn');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            setLanguage(lang);
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    setLanguage('en');
+</script>
+</body>
+</html>
